@@ -88,7 +88,8 @@ pub fn module<'a>(context: &'a Context) -> Option<Module<'a>> {
         },
     );
 
-    module.get_prefix().set_value("in ");
+    module.get_suffix().set_value(config.suffix);
+    module.get_prefix().set_value(config.prefix);
 
     Some(module)
 }

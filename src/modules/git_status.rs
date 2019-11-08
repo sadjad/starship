@@ -190,6 +190,16 @@ fn create_segment_with_count<'a>(
 fn get_repo_status(repository: &Repository) -> Result<RepoStatus, git2::Error> {
     let mut status_options = git2::StatusOptions::new();
 
+    match repository.config()?.get_bool("bash.showDirtyState") {
+        Ok(entry) => {
+            if !entry {
+                return Err(git2::Error::from_str("Repo has no status"));
+            }
+        }
+
+        _ => {}
+    }
+
     match repository.config()?.get_entry("status.showUntrackedFiles") {
         Ok(entry) => status_options.include_untracked(entry.value() != Some("no")),
         _ => status_options.include_untracked(true),

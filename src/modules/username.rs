@@ -22,6 +22,9 @@ pub fn module<'a>(context: &'a Context) -> Option<Module<'a>> {
     let mut module = context.new_module("username");
     let config: UsernameConfig = UsernameConfig::try_load(module.config);
 
+    module.get_prefix().set_value(config.prefix);
+    module.get_suffix().set_value(config.suffix);
+
     if user != logname || ssh_connection.is_some() || user_uid == ROOT_UID || config.show_always {
         let module_style = match user_uid {
             Some(0) => config.style_root,
